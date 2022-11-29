@@ -1,5 +1,5 @@
 pipeline {
-  agent (label 'Build_server')
+  agent any
   stages {
     stage ('Second build') {
       steps {
