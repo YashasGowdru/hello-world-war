@@ -1,4 +1,4 @@
-pipeline{
+pipeline {
   agent (label 'Build_server')
   stages {
     stage ('Second build') {
