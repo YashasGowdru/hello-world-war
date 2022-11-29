@@ -9,5 +9,12 @@ pipeline {
         sh 'pwd'
       }
     }
+    stage ('my build') {
+      steps { 
+        sh 'whoami'
+        sh 'ls'
+        sh 'pwd'
+      }
+    }
   }
 }
