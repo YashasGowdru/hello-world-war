@@ -9,6 +9,8 @@
 	<h2>3.Devops</h2>
 	<h2>4.Jenkins</h2>
 	<h2>5.Kubernetes</h2>
+	<h2>6.Dockers</h2>
+	<h2>7.Ansi</h2>
 	<p>
 		It is now
 		<%= new java.util.Date() %></p>
