@@ -6,17 +6,20 @@ pipeline {
               steps {
 		      sh 'ls'
                       sh 'pwd'
-                      sh 'mvn package'
-		      sh 'chmod 777 target'
+		      sh "echo $(BUILD_NUMBER)"
+                      sh 'mvn deploy'
 		      sh 'pwd'
-		      sh 'scp -R target/hello-world-war-1.0.0.war jenkinsla@172.31.45.23:/opt/tomcat/webapps'
 		      sh 'echo "sucessfully copied build to other node"'
               }
 	    }
 	   stage ('diploy in node2') {
 	   	agent {label "slavesw"}
               	steps {
-		  	sh 'sudo sh /opt/tomcat/bin/shutdown.sh'                   
+		  	sh 'pwd'
+			sh 'whoami'
+			sh 'curl -u yashasjgowda@gmail.com:Devops@123 -O 'https://yashasjfrog.jfrog.io/artifactory/libs-release-local/com/efsavage/hello-world-war/$(BUILD_NUMBER)/hello-world-war-$(BUILD_NUMBER).war''			
+			sh 'sudo cp -R hello-world-war/$(BUILD_NUMBER).war /opt/tomcat/webapps'
+			sh 'sudo sh /opt/tomcat/bin/shutdown.sh'                   
                   	sh 'sudo sleep 3'
                   	sh 'sudo sh /opt/tomcat/bin/startup.sh'
                   	echo "diployment is sucessfull"
