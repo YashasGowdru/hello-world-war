@@ -6,7 +6,7 @@ pipeline {
               steps {
 		      sh 'ls'
                       sh 'pwd'
-		      sh "echo $(BUILD_NUMBER)"
+		      sh 'echo $(BUILD_NUMBER)'
                       sh 'mvn deploy'
 		      sh 'pwd'
 		      sh 'echo "sucessfully copied build to other node"'
