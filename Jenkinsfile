@@ -18,8 +18,8 @@ pipeline {
         agent {label 'slave1'} 
             steps {
                sh 'docker pull yashas1234/yashasdock:latest'
-               sh 'docker rm -f mytomcat'
-               sh 'docker run -d -p 8080:8080 --name mytomcat yashas1234/yashasdock:latest'
+               sh 'docker rm -f yashasdock'
+               sh 'docker run -d -p 8080:8080 --name yashasdock yashas1234/yashasdock:latest'
             }
         }    
     } 
