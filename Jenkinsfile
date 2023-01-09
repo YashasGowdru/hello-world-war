@@ -15,7 +15,7 @@ pipeline {
             }
         } 
         stage( 'my deploy' ) {
-        agent {label 'slave1'} 
+        agent {label 'slave2'} 
             steps {
                sh 'docker pull yashas1234/yashasdock:latest'
                sh 'docker rm -f yashasdock'
