@@ -1,30 +1,26 @@
 pipeline {
-	agent none
-        stages {
-           stage ("tomcat build & move to other node") {
-	      agent {label "build_slave1"}
-              steps {
-		      sh 'ls'
-                      sh 'pwd'
-		      sh 'echo $(BUILD_NUMBER)'
-                      sh 'mvn deploy'
-		      sh 'pwd'
-		      sh 'echo "sucessfully copied build to other node"'
-              }
-	    }
-	   stage ('diploy in node2') {
-	   	agent {label "slavesw"}
-              	steps {
-		  	sh 'pwd'
-			sh 'whoami'
-			sh 'curl -u yashasjgowda@gmail.com:Devops@123 -O https://yashasjfrog.jfrog.io/artifactory/libs-release-local/com/efsavage/hello-world-war/$(BUILD_NUMBER)/hello-world-war-$(BUILD_NUMBER).war'		
-			sh 'sudo cp -R hello-world-war/$(BUILD_NUMBER).war /opt/tomcat/webapps'
-			sh 'sudo sh /opt/tomcat/bin/shutdown.sh'                   
-                  	sh 'sudo sleep 3'
-                  	sh 'sudo sh /opt/tomcat/bin/startup.sh'
-                  	echo "diployment is sucessfull"
-                  	echo "copy the public ip of instace and open it in browser with port:8090"
-		}
-	   } 	   
-      }
+    agent {label 'slave1'}
+    stages {
+        stage('my Build') {
+            steps {
+                sh 'docker build -t tomcat_build:latest .' 
+            }
+        }  
+        stage('publish stage') {
+            steps {
+                sh "echo ${BUILD_NUMBER}"
+                sh 'docker login -u yashas1234 -p Yashas@123'
+                sh 'docker tag tomcat_build:latest yashas1234/yashasdock:latest'
+                sh 'docker push yashas1234/yashasdock:latest'
+            }
+        } 
+        stage( 'my deploy' ) {
+        agent {label 'slave1'} 
+            steps {
+               sh 'docker pull yashas1234/yashasdock:latest'
+               sh 'docker rm -f mytomcat'
+               sh 'docker run -d -p 8080:8080 --name mytomcat yashas1234/yashasdock:latest'
+            }
+        }    
+    } 
 }
